@@ -1,1 +1,1 @@
-Seedly is a Tracker page, gives weekly report based on your performance. You manual track habits.
+Seedly is a Tracker page, gives weekly report based on your performance. You manually track habits.
