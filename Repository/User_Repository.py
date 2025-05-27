@@ -15,7 +15,7 @@ class User_Repository:
         self.conn.commit()
         return (new_user)
     
-    def update_user(self, user_id, u:U.User):
+    def update_user(self, u:U.User, user_id):
         with self.conn.cursor() as cur:
             cur.execute("""Update user_details set  password=%s, first_name=%s, last_name=%s, dob=%s,
             objective=%s, creation_date=%s, lock_account=%s, last_login=%s,user_name=%s where user_id=%s """, (u.password, u.first_name, u.last_name, u.dob, u.objective, u.creation_date, u.lock_account, u.last_login, u.user_name,user_id))
@@ -29,11 +29,12 @@ class User_Repository:
                 for row in get_all_rows:
                             id, password, first_name, last_name, dob, objective, creation_date, lock_account, last_login, user_name = row
                             users.append(U.User(password,first_name, last_name, dob, objective, creation_date, lock_account, last_login, user_name, user_id = id))
+                
                 return users
     
-    def get_user_by_UserId(self, user_id):
+    def get_user_by_UserId(self, user_id:int):
         with self.conn.cursor() as cur:
-            cur.execute("select * from user_details where user_id =%s", (user_id,))
+            cur.execute(f"select * from user_details where user_id ={user_id}")
             row = cur.fetchone()
             if row:
                 id, password, first_name, last_name, dob, objective, creation_date, lock_account, last_login, user_name = row

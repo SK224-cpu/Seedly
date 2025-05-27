@@ -3,6 +3,7 @@ import psycopg2
 from Repository.Task_Repository import *
 from Repository.User_Repository import *
 from Repository.DailyEntry_Repository import *
+import Models.User as U
 
 def main():
         
@@ -41,7 +42,17 @@ def main():
         # user1.delete_user(conn,21)
 
         User_Repository1 = User_Repository(conn)
-        print(User_Repository1.getAll_users())
+        
+        # user1 = User_Repository1.get_user_by_UserId(26)
+        # if user1!=None:
+        #         user1.first_name = "Hulk"
+        #         User_Repository1.update_user(user1,23)
+
+        for i in User_Repository1.getAll_users():
+                print(f"Full Nme: {i.first_name} {i.last_name} Id: {i.user_id}")
+
+       
+
 
 if __name__== "__main__":
         main()

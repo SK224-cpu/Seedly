@@ -20,7 +20,26 @@ class Task_Repository:
             for row in print_tasks:
                 tasks.append(T.Task(row[1],row[2], row[0]))
             return tasks
-        
+    
+
     # def get_all_tasks_by_id(task_id,conn):
     #     with conn.cursor() as task_cursor:
     #         task_cursor.execute(f"select task_id, task_name from tasks_details where task_id= {task_id}")
+    def update_task(self, task:T.Task, task_id:int):
+        with self.conn.cursor() as cur:
+            cur.execute("""Update tasks_details set task_name=%s, task_desc=%s where task_id=%s """, ( T.task_name, T.task_desc, task_id))
+        self.conn.commit()
+
+    def delete_user(self,task_id):
+        with self.conn.cursor() as cur:
+            cur.execute("""delete from tasks_details where task_id=%s""", (task_id,))
+        self.conn.commit()
+    
+    def get_user_by_TaskId(self, task_id):
+        with self.conn.cursor() as cur:
+            cur.execute("select * from tasks_details where task_id =%s", (task_id,))
+            row = cur.fetchone()
+            if row:
+                task_id, task_name, task_desc= row
+                return T.Task(task_id, task_name, task_desc = id)
+        return None
