@@ -1,9 +1,9 @@
 from configparser import ConfigParser
 import psycopg2
-from datetime import datetime
-import User as u
-import Task as t
-from configparser import ConfigParser
+from Repository.Task_Repository import *
+from Repository.User_Repository import *
+from Repository.DailyEntry_Repository import *
+
 def main():
         
         config=ConfigParser()
@@ -14,13 +14,13 @@ def main():
         password_var=config['DB']['password']
         conn = psycopg2.connect(host=host_var,database=database_var,user=user_var,password=password_var) 
 
-        user1=u.User('***','Sweety','RRR',datetime.strptime('08/05/2000', '%d/%m/%Y'),'HAbit Tracker',datetime.now().strftime("%Y-%m-%d"),  False,datetime.now().strftime("%Y-%m-%d"),'sk@gmail.com')
-        Task_name = input("Enter a rabbit to track:  ")
-        task1=t.Task(Task_name,"None")
+        # user1=u.User('***','Sweety','RRR',datetime.strptime('08/05/2000', '%d/%m/%Y'),'HAbit Tracker',datetime.now().strftime("%Y-%m-%d"),  False,datetime.now().strftime("%Y-%m-%d"),'sk@gmail.com')
+        # Task_name = input("Enter a rabbit to track:  ")
+        # task1=t.Task(Task_name,"None")
         #task1.create_task(conn)
         # print(type(conn))
         
-        task1.get_all_tasks(conn)
+        # print(task1.get_all_tasks(conn))
         #task1.get_all_tasks_by_id(1)
 
         # get_user_details=user1.getAll_users(conn)
@@ -39,6 +39,10 @@ def main():
         # # user1.password='##'
         # # user1.update(conn,23)
         # user1.delete_user(conn,21)
+
+        User_Repository1 = User_Repository(conn)
+        print(User_Repository1.getAll_users())
+
 if __name__== "__main__":
         main()
 
