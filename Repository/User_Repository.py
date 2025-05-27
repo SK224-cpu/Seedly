@@ -46,3 +46,12 @@ class User_Repository:
             cur.execute("""delete from user_details where user_id=%s""", (user_id,))
         self.conn.commit()
 
+    def get_user_by_username(self,user_name_exists):
+        with self.conn.cursor() as cur:
+            cur.execute(f"select * from user_details where user_name ={user_name_exists}")
+            row = cur.fetchone()
+            if row:
+                id, password, first_name, last_name, dob, objective, creation_date, lock_account, last_login, user_name = row
+                return U.User(password,first_name, last_name, dob, objective, creation_date, lock_account, last_login, user_name, user_id = id)
+        return None
+

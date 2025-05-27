@@ -21,10 +21,6 @@ class Task_Repository:
                 tasks.append(T.Task(row[1],row[2], row[0]))
             return tasks
     
-
-    # def get_all_tasks_by_id(task_id,conn):
-    #     with conn.cursor() as task_cursor:
-    #         task_cursor.execute(f"select task_id, task_name from tasks_details where task_id= {task_id}")
     def update_task(self, task:T.Task, task_id:int):
         with self.conn.cursor() as cur:
             cur.execute("""Update tasks_details set task_name=%s, task_desc=%s where task_id=%s """, ( T.task_name, T.task_desc, task_id))
