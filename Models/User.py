@@ -1,4 +1,3 @@
-import psycopg2
 class User:
     def __init__(self,password,
                 first_name,

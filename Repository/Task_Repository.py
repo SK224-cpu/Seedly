@@ -10,7 +10,7 @@ class Task_Repository:
                                 VALUES (%s,%s) RETURNING task_id""", 
                                 (task.task_name, task.task_desc) )
             new_task=task_cursor.fetchone()[0]
-        return(new_task)
+        return new_task
     
     def get_all_tasks(self):
         with self.conn.cursor() as task_cursor:

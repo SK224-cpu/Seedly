@@ -52,7 +52,7 @@ class DailyEntry_Repository:
 
     def update_daily_Entries(self,de:DE.DailyEntry, daily_entry_id):
         with self.conn.cursor() as cur:
-            cur.execute("""UPDATE daily_entry SET task_status=%s,timestamp=%s WHERE daily_entry_id= %s""", (de.task_status, de.timestamp, daily_entry_id))
+            cur.execute("""UPDATE daily_entry SET task_status = %s,timestamp = %s WHERE daily_entry_id= %s""", (de.task_status, de.timestamp, daily_entry_id))
         self.conn.commit()
 
     def delete_daily_entry(self, daily_entry_id):

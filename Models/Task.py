@@ -1,5 +1,3 @@
-import psycopg2
-
 class Task():
     def __init__(self,task_name,task_desc=str(),task_id=None):
         self.task_id = task_id
