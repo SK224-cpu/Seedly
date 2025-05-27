@@ -23,7 +23,7 @@ class User_Repository:
     
     def getAll_users(self):
             with self.conn.cursor() as cur:
-                cur.execute("select * from user_details;")  
+                cur.execute("select * from user_details;")
                 get_all_rows = cur.fetchall()
                 users = []
                 for row in get_all_rows:
