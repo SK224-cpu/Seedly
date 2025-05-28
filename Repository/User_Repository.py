@@ -43,7 +43,7 @@ class User_Repository:
     
     def delete_user(self,user_id):
         with self.conn.cursor() as cur:
-            cur.execute("""delete from user_details where user_id = %s""", (user_id,))
+            cur.execute("""DELETE FROM user_details WHERE user_id = %s""", (user_id,))
         self.conn.commit()
 
     def get_user_by_username(self,user_name_exists):
