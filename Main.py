@@ -1,9 +1,11 @@
+import datetime
 from configparser import ConfigParser
 import psycopg2
 from Repository.Task_Repository import *
 from Repository.User_Repository import *
 from Repository.DailyEntry_Repository import *
 import Models.User as U
+from Logic.User import *
 
 def main():
         
@@ -41,17 +43,22 @@ def main():
         # # user1.update(conn,23)
         # user1.delete_user(conn,21)
 
-        User_Repository1 = User_Repository(conn)
+        #User_Repository1 = User_Repository(conn)
         
         # user1 = User_Repository1.get_user_by_UserId(26)
         # if user1!=None:
         #         user1.first_name = "Hulk"
         #         User_Repository1.update_user(user1,23)
 
-        for i in User_Repository1.getAll_users():
-                print(f"Full Nme: {i.first_name} {i.last_name} Id: {i.user_id}")
+        # for i in User_Repository1.getAll_users():
+        #         print(f"Full Nme: {i.first_name} {i.last_name} Id: {i.user_id}")
 
-       
+ #        Name= user_signup('Aditya','I',datetime.date(2010, 5, 24)
+ # ,'Habit tracker',"ai@gmail.com",'SD5648FF',conn)
+ #        print(Name)
+
+        user_profile_update('Aaaaaditya','I',datetime.date(2010, 5, 24)
+ ,'Habit tracker',"ai@gmail.com",'SD5648FF',conn)
 
 
 if __name__== "__main__":

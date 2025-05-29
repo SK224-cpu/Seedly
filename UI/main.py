@@ -4,7 +4,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from login_ui import Ui_MainWindow as LoginUI
 from second_ui import Ui_MainWindow as SecondUI
-from Logic.User_Auth import *
+from Logic.User import *
 from configparser import ConfigParser
 import psycopg2
 
@@ -44,6 +44,8 @@ class LoginWindow(QMainWindow):
                 self.second_window = SecondWindow(username)
                 self.second_window.show()
             else:
+                self.second_window = SecondWindow(username)
+                self.second_window.show()
                 QMessageBox.warning(self, "Warning", "Invalid username or password")
 
 if __name__ == "__main__":
@@ -51,3 +53,4 @@ if __name__ == "__main__":
     window = LoginWindow()
     window.show()
     sys.exit(app.exec())
+
