@@ -1,5 +1,5 @@
 from Logic.User import *
-# from login_ui import Ui_MainWindow as LoginUI
+from login_ui import Ui_MainWindow as LoginUI
 from configparser import ConfigParser
 import psycopg2
 from SecondWindow import *
@@ -9,7 +9,7 @@ class LoginWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.signup_window = None
-        # self.ui = LoginUI()
+        self.ui = LoginUI()
         self.ui.setupUi(self)
         self.setWindowTitle("Login To Seedly")
         self.ui.loginButton.clicked.connect(self.login)
