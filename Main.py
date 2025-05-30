@@ -6,6 +6,7 @@ from Repository.User_Repository import *
 from Repository.DailyEntry_Repository import *
 import Models.User as U
 from Logic.User import *
+from Logic.Task import *
 
 def main():
         
@@ -57,10 +58,15 @@ def main():
  # ,'Habit tracker',"ai@gmail.com",'SD5648FF',conn)
  #        print(Name)
 
-        user_profile_update('Aaaaaditya','I',datetime.date(2010, 5, 24)
- ,'Habit tracker',"ai@gmail.com",'SD5648FF',conn)
-
-
+ #        user_profile_update('Aaaaaditya','I',datetime.date(2010, 5, 24)
+ # ,'Habit tracker',"ai@gmail.com",'SD5648FF',conn)
+ #
+       # task = add_task(conn,"Hiking","Task")
+       #  task = delete_task(conn, "Hiking")
+       #  task = task_profile_update (conn,"Run","Run_123","Updated")
+        task = DailyEntry_Repository(conn)
+        task1 = task.get_all_details_by_user_id(7)
+        print(task1)
 if __name__== "__main__":
         main()
 

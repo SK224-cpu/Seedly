@@ -6,10 +6,10 @@ class DailyEntry_Repository:
 
     def create_daily_entry(self, de:DE.DailyEntry):
         with self.conn.cursor() as curr:
-            curr.execute("""INSERT INTO daily_entry (user_id, task_id, task_status, timestamp, note) 
-                            VALUES (%s, %s, %s, %s, %s) 
+            curr.execute("""INSERT INTO daily_entry (user_id, task_id, task_status, timestamp, note, task_completed) 
+                            VALUES (%s, %s, %s, %s, %s, %s) 
                             RETURNING daily_entry_id""", 
-                            (de.user_id, de.task_id, de.task_status, de.timestamp, de.note))
+                            (de.user_id, de.task_id, de.task_status, de.timestamp, de.note, de.task_completed))
             dailyEntryId = curr.fetchone()[0]
             self.conn.commit()
         return dailyEntryId
@@ -20,7 +20,7 @@ class DailyEntry_Repository:
             dailyentries=curr.fetchall()
             list_of_daily_entries=[]
             for row in dailyentries:
-                obj=DE.DailyEntry(daily_entry_id=row[0],user_id=row[1],task_id=row[2],task_status=row[3],timestamp=row[4],note=row[5])
+                obj=DE.DailyEntry(daily_entry_id=row[0],user_id=row[1],task_id=row[2],task_status=row[3],timestamp=row[4],note=row[5], task_completed=row[6])
                 list_of_daily_entries.append(obj)
             return list_of_daily_entries
     
@@ -30,7 +30,7 @@ class DailyEntry_Repository:
             dailyentries=curr.fetchall()
             list_of_daily_entries=[]
             for row in dailyentries:
-                obj=DE.DailyEntry(daily_entry_id=row[0],user_id=row[1],task_id=row[2],task_status=row[3],timestamp=row[4],note=row[5])
+                obj=DE.DailyEntry(daily_entry_id=row[0],user_id=row[1],task_id=row[2],task_status=row[3],timestamp=row[4],note=row[5], task_completed=row[6])
                 list_of_daily_entries.append(obj)
             return list_of_daily_entries 
     
@@ -40,7 +40,7 @@ class DailyEntry_Repository:
             dailyentries=curr.fetchall()
             list_of_daily_entries=[]
             for row in dailyentries:
-                obj=DE.DailyEntry(daily_entry_id=row[0],user_id=row[1],task_id=row[2],task_status=row[3],timestamp=row[4],note=row[5])
+                obj=DE.DailyEntry(daily_entry_id=row[0],user_id=row[1],task_id=row[2],task_status=row[3],timestamp=row[4],note=row[5], task_completed=row[6])
                 list_of_daily_entries.append(obj)
             return list_of_daily_entries
 
@@ -48,7 +48,7 @@ class DailyEntry_Repository:
         with self.conn.cursor() as curr:
             curr.execute(f"SELECT * FROM daily_entry WHERE daily_entry_id ={daily_entry_id}")
             dailyentry=curr.fetchone()
-            return DE.DailyEntry(daily_entry_id=dailyentry[0], user_id=dailyentry[1],task_id=dailyentry[2],task_status=dailyentry[3],timestamp=dailyentry[4],note=dailyentry[5])  
+            return DE.DailyEntry(daily_entry_id=dailyentry[0], user_id=dailyentry[1],task_id=dailyentry[2],task_status=dailyentry[3],timestamp=dailyentry[4],note=dailyentry[5],task_completed=dailyentry[6])
 
     def update_daily_Entries(self, de:DE.DailyEntry, daily_entry_id:int):
         with self.conn.cursor() as cur:
@@ -59,3 +59,24 @@ class DailyEntry_Repository:
         with self.conn.cursor() as curr:
             curr.execute(f"DELETE FROM daily_entry WHERE daily_entry_id={daily_entry_id}")
         self.conn.commit()
+
+    def get_all_details_by_user_id(self, userId:int):
+        with self.conn.cursor() as curr:
+            curr.execute("""SELECT TD.task_name, UD.first_name, UD.last_name, DE.task_status, DE.timestamp
+                         FROM daily_entry DE, tasks_details TD, user_details UD
+                         WHERE DE.task_id = TD.task_id
+                        and DE.user_id = UD.user_id 
+                         and DE.user_id =%s""", (userId,))
+            print_tasks = curr.fetchall()
+
+            # for row in print_tasks:
+            #     tasks.append(T.Task(row[1], row[2], row[0]))
+            return print_tasks
+
+
+            # dailyentries=curr.fetchall()
+            # list_of_daily_entries=[]
+            # for row in dailyentries:
+            #     obj=DE.DailyEntry(daily_entry_id=row[0],user_id=row[1],task_id=row[2],task_status=row[3],timestamp=row[4],note=row[5], task_completed=row[6])
+            #     list_of_daily_entries.append(obj)
+            # return list_of_daily_entries
