@@ -1,5 +1,6 @@
 import datetime
 import Models.User as U
+import Models.DailyEntry as D
 from Repository.User_Repository import *
 from Repository.DailyEntry_Repository import *
 
@@ -58,4 +59,13 @@ def display_count_of_task_id(user_id,conn):
     task_repo= DailyEntry_Repository(conn)
     task1 = task_repo.task_streak_monthwise(user_id)
 
-    
+def add_task_to_track(user_id, task_id,conn):
+    task_repo = DailyEntry_Repository(conn)
+    task1 = task_repo.get_tasks_of_user(user_id)
+    if task1.count() < 5:
+        task_DE = D.DailyEntry(user_id,task_id,False,datetime.datetime.now(),False)
+        Daily_Entry_task_id = task_repo.create_daily_entry(task_DE)
+        return task_id
+    else:
+        return "your 5 task limit reached"
+
