@@ -6,6 +6,7 @@ import Models.Task as T
 def add_task(conn,t_name,t_desc):
     task_repo = Task_Repository(conn)
     task1=task_repo.get_task_by_taskName(lower(t_name))
+
     if task1 is None:
         task_id= task_repo.create_task(T.Task(lower(t_name),t_desc))
         if task_id is not None:
@@ -42,5 +43,7 @@ def delete_task(conn,t_name):
 def display_all_tasks(user_id):
     task_repo = Task_Repository()
     task1 = task_repo.get_all_tasks()
+
+
 
 

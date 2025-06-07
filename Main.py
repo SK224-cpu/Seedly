@@ -1,4 +1,5 @@
 import datetime
+from calendar import month
 from configparser import ConfigParser
 import psycopg2
 from Repository.Task_Repository import *
@@ -7,6 +8,7 @@ from Repository.DailyEntry_Repository import *
 import Models.User as U
 from Logic.User import *
 from Logic.Task import *
+import Models.DailyEntry as DE
 
 def main():
         
@@ -64,8 +66,17 @@ def main():
        # task = add_task(conn,"Hiking","Task")
        #  task = delete_task(conn, "Hiking")
        #  task = task_profile_update (conn,"Run","Run_123","Updated")
+
+        # de = DE.DailyEntry(
+        #             user_id=8,
+        #             task_id=2,
+        #             task_status = False,
+        #             timestamp="2026-06-07T12:00:00Z",
+        #             note="Completed the task successfully.",
+        #             task_completed = False)
         task = DailyEntry_Repository(conn)
-        task1 = task.get_all_details_by_user_id(7)
+        task1 = task.task_streak_monthwise(7,6,2025)
+        # task1 = task.create_daily_entry(de)
         print(task1)
 if __name__== "__main__":
         main()

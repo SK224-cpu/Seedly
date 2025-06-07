@@ -1,6 +1,7 @@
 import datetime
 import Models.User as U
 from Repository.User_Repository import *
+from Repository.DailyEntry_Repository import *
 
 def login(user_name,password,conn):
     user_repo = User_Repository(conn)
@@ -49,6 +50,12 @@ def user_profile_update(first_name,
 
     user_repo.update_user(user_obj,user_obj.user_id)
 
+def display_tasks_by_user(user_id,conn):
+    task_repo= DailyEntry_Repository(conn)
+    task1 = task_repo.get_tasks_of_user(user_id)
 
+def display_count_of_task_id(user_id,conn):
+    task_repo= DailyEntry_Repository(conn)
+    task1 = task_repo.task_streak_monthwise(user_id)
 
     

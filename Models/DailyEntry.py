@@ -1,6 +1,6 @@
 
 class DailyEntry:
-    def __init__(self, user_id, task_id, task_status, timestamp, note, task_completed,daily_entry_id=None):
+    def __init__(self, user_id: object, task_id: object, task_status: object, timestamp: object, note: object, task_completed: object, daily_entry_id: object = None) -> None:
         self.user_id = user_id
         self.task_id = task_id
         self.task_status = task_status

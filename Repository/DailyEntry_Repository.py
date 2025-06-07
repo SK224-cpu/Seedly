@@ -1,4 +1,5 @@
 import Models.DailyEntry as DE
+import Models.Task as T
 
 class DailyEntry_Repository:
     def __init__(self, conn):
@@ -65,7 +66,7 @@ class DailyEntry_Repository:
             curr.execute("""SELECT TD.task_name, UD.first_name, UD.last_name, DE.task_status, DE.timestamp
                          FROM daily_entry DE, tasks_details TD, user_details UD
                          WHERE DE.task_id = TD.task_id
-                        and DE.user_id = UD.user_id 
+                         and DE.user_id = UD.user_id 
                          and DE.user_id =%s""", (userId,))
             print_tasks = curr.fetchall()
 
@@ -73,6 +74,29 @@ class DailyEntry_Repository:
             #     tasks.append(T.Task(row[1], row[2], row[0]))
             return print_tasks
 
+    def get_tasks_of_user(self, user_id):
+                with self.conn.cursor() as cur:
+                    cur.execute("""SELECT TD.task_name, TD.task_id
+                         FROM daily_entry DE, tasks_details TD, user_details UD
+                         WHERE DE.task_id = TD.task_id
+                        and DE.user_id = UD.user_id 
+                         and DE.user_id =%s""", (user_id,))
+                    print_tasks = cur.fetchall()
+                    tasks = []
+                    for row in print_tasks:
+                        tasks.append(T.Task(task_id=row[0], task_name=row[1]))
+                    return tasks
+
+    def task_streak_monthwise(self, user_id,month,year):
+        with self.conn.cursor() as cur:
+            cur.execute("""select COUNT(task_id)  from daily_entry
+            WHERE task_status = TRUE 
+            and task_completed = FALSE
+            AND user_id = %s
+            AND EXTRACT(MONTH FROM timestamp) = %s
+            AND EXTRACT(YEAR FROM timestamp) = %s""", (user_id,month,year))
+            count_task_id = cur.fetchone()
+            return count_task_id
 
             # dailyentries=curr.fetchall()
             # list_of_daily_entries=[]
