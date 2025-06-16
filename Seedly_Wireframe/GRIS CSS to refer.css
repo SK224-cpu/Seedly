@@ -1,0 +1,33 @@
+body {
+  background-color: #D5E9F4;
+  color: #4B4B4B;
+  font-family: 'Poppins', sans-serif;
+}
+
+.navbar {
+  background-color: #7BAEC9;
+}
+
+.btn-primary {
+  background-color: #7BAEC9;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #5B8BA5;
+}
+
+.alert-success {
+  background-color: #A9D6C6;
+  color: #2F4F4F;
+}
+
+.alert-danger {
+  background-color: #F4D1DA;
+  color: #6D0F27;
+}
+
+.card {
+  background-color: #FAFAFA;
+  border-left: 4px solid #B48BAF;
+}

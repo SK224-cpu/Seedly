@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+ 
+<h1>Seedly</h1>
+<p>Login/Signup</p>
+ 
+<!-- Username and Password Inputs -->
+<label for="username">Username:</label>
+<input type="text" id="username" name="username"><br><br>
+ 
+<label for="password">Password:</label>
+<input type="password" id="password" name="password"><br><br>
+ 
+<!-- Submit Button -->
+<button onclick="myFunction()">Submit</button>
+ 
+<!-- JavaScript -->
+<script>
+    
+        // Get values from input boxes
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+    function myFunction() { 
+        // Show alert with entered values
+        alert("Hi, " + username + " !");
+    }
+</script>
+ 
+</body>
+</html>

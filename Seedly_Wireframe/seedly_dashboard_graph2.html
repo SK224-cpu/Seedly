@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seedly Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --bg-light: #fdfcf7;
+      --bg-dark: #1f1f1f;
+      --text-light: #6D6A75;
+      --text-dark: #e0e0e0;
+      --card-light: #e1f5e4;
+      --card-dark: #2c2c2c;
+      --accent: #4caf50;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+
+    .dark-mode {
+      background-color: var(--bg-dark) !important;
+      color: var(--text-dark) !important;
+    }
+
+    .card {
+      background-color: var(--card-light);
+      border: none;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .dark-mode .card {
+      background-color: var(--card-dark);
+    }
+
+    .navbar {
+      background-color: var(--accent);
+    }
+
+    .navbar-brand {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .toggle-switch {
+      cursor: pointer;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+    }
+
+    .btn-export {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">🌱 Seedly Dashboard</a>
+      <div class="form-check form-switch ms-auto">
+        <input class="form-check-input toggle-switch" type="checkbox" id="darkToggle">
+        <label class="form-check-label text-white" for="darkToggle">Dark Mode</label>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container py-4">
+    <div class="row mb-4">
+      <div class="col-12">
+        <h4>Select Tasks to Display</h4>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input task-toggle" type="checkbox" value="Task Completion" checked id="task1">
+          <label class="form-check-label" for="task1">Task Completion</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input task-toggle" type="checkbox" value="Water Intake" checked id="task2">
+          <label class="form-check-label" for="task2">Water Intake</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input task-toggle" type="checkbox" value="Reading Habit" checked id="task3">
+          <label class="form-check-label" for="task3">Reading Habit</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input task-toggle" type="checkbox" value="Workout Tracker" checked id="task4">
+          <label class="form-check-label" for="task4">Workout Tracker</label>
+        </div>
+      </div>
+    </div>
+    <div class="card p-4 shadow-sm mb-4">
+      <h4 class="mb-3">Combined Task Graph</h4>
+      <div class="chart-container">
+        <canvas id="combinedChart"></canvas>
+      </div>
+      <button class="btn btn-sm btn-outline-primary btn-export" onclick="downloadChart('combinedChart')">Download</button>
+      <button class="btn btn-sm btn-outline-secondary btn-export" onclick="downloadPDF()">Export PDF</button>
+    </div>
+  </div>
+
+  <script>
+    const combinedCtx = document.getElementById('combinedChart').getContext('2d');
+
+    const datasets = {
+      "Task Completion": {
+        label: "Task Done",
+        data: [1,0,1,1,0,0,1,1,1,0,1,1,0,0,1,1,1,0,0,1,1,0,1,1,0,0,1,1,1,1],
+        borderColor: "#4caf50",
+        backgroundColor: "#4caf50"
+      },
+      "Water Intake": {
+        label: "Water Intake",
+        data: [1,1,0,1,1,1,0,0,1,1,1,0,1,1,0,1,1,0,1,1,0,0,1,1,1,0,1,1,1,1],
+        borderColor: "#2196f3",
+        backgroundColor: "#2196f3"
+      },
+      "Reading Habit": {
+        label: "Reading",
+        data: [1,1,0,1,1,0,0,1,1,1,1,0,0,1,1,1,0,0,1,1,1,0,1,1,1,1,1,1,1,1],
+        borderColor: "#ff9800",
+        backgroundColor: "#ff9800"
+      },
+      "Workout Tracker": {
+        label: "Workout",
+        data: [0,1,0,1,0,0,1,1,0,0,1,1,0,1,1,0,0,1,0,1,1,0,1,0,1,0,1,0,1,1],
+        borderColor: "#9c27b0",
+        backgroundColor: "#9c27b0"
+      }
+    };
+
+    const chart = new Chart(combinedCtx, {
+      type: 'line',
+      data: {
+        labels: Array.from({ length: 30 }, (_, i) => `Day ${i + 1}`),
+        datasets: []
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true }
+        },
+        scales: {
+          y: {
+            suggestedMin: 0,
+            suggestedMax: 1,
+            ticks: { stepSize: 1 }
+          },
+          x: {}
+        }
+      }
+    });
+
+    function updateChart() {
+      chart.data.datasets = [];
+      document.querySelectorAll('.task-toggle:checked').forEach(cb => {
+        chart.data.datasets.push(datasets[cb.value]);
+      });
+      chart.update();
+    }
+
+    document.querySelectorAll('.task-toggle').forEach(cb => {
+      cb.addEventListener('change', updateChart);
+    });
+
+    updateChart();
+
+    document.getElementById('darkToggle').addEventListener('change', function () {
+      document.body.classList.toggle('dark-mode');
+    });
+
+    function downloadChart(id) {
+      const link = document.createElement('a');
+      link.download = `${id}.png`;
+      link.href = document.getElementById(id).toDataURL('image/png');
+      link.click();
+    }
+
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF();
+      const canvas = document.getElementById('combinedChart');
+      const imgData = canvas.toDataURL('image/png');
+      pdf.addImage(imgData, 'PNG', 15, 20, 180, 100);
+      pdf.save("Seedly_Habit_Combined_Chart.pdf");
+    }
+  </script>
+</body>
+</html>
