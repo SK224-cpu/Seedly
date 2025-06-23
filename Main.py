@@ -74,10 +74,13 @@ def main():
         #             timestamp="2026-06-07T12:00:00Z",
         #             note="Completed the task successfully.",
         #             task_completed = False)
-        task = DailyEntry_Repository(conn)
-        task1 = task.task_streak_monthwise(7,6,2025)
-        # task1 = task.create_daily_entry(de)
-        print(task1)
+        # task = DailyEntry_Repository(conn)
+        # task1 = task.task_streak_monthwise(7,6,2025)
+        # # task1 = task.create_daily_entry(de)
+        # print(task1)
+
+        login_result = user_login("sk@gmail.com_9","***", conn)
+        print(login_result)
 if __name__== "__main__":
         main()
 

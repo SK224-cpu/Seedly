@@ -23,20 +23,28 @@ class Task_Repository:
         
     def update_task(self, task:T.Task, task_id:int):
         with self.conn.cursor() as cur:
-            cur.execute("""Update tasks_details set task_name=%s, task_desc=%s where task_id=%s """, ( T.task_name, T.task_desc, task_id))
+            cur.execute("""Update tasks_details set task_name=%s, task_desc=%s where task_id=%s """, ( task.task_name, task.task_desc, task_id))
         self.conn.commit()
 
-    def delete_user(self,task_id):
+    def delete_task(self,task_id):
         with self.conn.cursor() as cur:
             cur.execute("""delete from tasks_details where task_id=%s""", (task_id,))
         self.conn.commit()
     
-    def get_task_by_TaskId(self, task_id):
+    def get_task_by_taskid(self, task_id):
         with self.conn.cursor() as cur:
             cur.execute("select * from tasks_details where task_id =%s", (task_id,))
             row = cur.fetchone()
             if row:
-                task_id, task_name, task_desc= row
-                return T.Task(task_id, task_name, task_desc = id)
+                task_name, task_desc, id = row
+                return T.Task(task_name, task_desc, task_id = id)
         return None
 
+    def get_task_by_taskname(self, task_name):
+        with self.conn.cursor() as cur:
+            cur.execute("select * from tasks_details where task_name =%s", (task_name,))
+            row = cur.fetchone()
+            if row:
+                task_name, task_desc, id = row
+                return T.Task(task_name, task_desc, task_id = id)
+        return None

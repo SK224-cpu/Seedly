@@ -1,14 +1,13 @@
 import datetime
-import Models.User as U
 import Models.DailyEntry as D
 from Repository.User_Repository import *
 from Repository.DailyEntry_Repository import *
 
-def login(user_name,password,conn):
+def user_login(user_name,password,conn):
     user_repo = User_Repository(conn)
     user1=user_repo.get_user_by_username(user_name)
     if user1 is not None:
-        if user1.password == password:
+        if user1[2] == password:
             return True
         return False
     else:
@@ -55,15 +54,15 @@ def display_tasks_by_user(user_id,conn):
     task_repo= DailyEntry_Repository(conn)
     task1 = task_repo.get_tasks_of_user(user_id)
 
-def display_count_of_task_id(user_id,conn):
+def display_count_of_task_id(user_id, month, year, conn):
     task_repo= DailyEntry_Repository(conn)
-    task1 = task_repo.task_streak_monthwise(user_id)
+    task1 = task_repo.task_streak_monthwise(user_id, month, year)
 
 def add_task_to_track(user_id, task_id,conn):
     task_repo = DailyEntry_Repository(conn)
     task1 = task_repo.get_tasks_of_user(user_id)
     if task1.count() < 5:
-        task_DE = D.DailyEntry(user_id,task_id,False,datetime.datetime.now(),False)
+        task_DE = D.DailyEntry(user_id,task_id,False,datetime.datetime.now(),"", False)
         Daily_Entry_task_id = task_repo.create_daily_entry(task_DE)
         return task_id
     else:
