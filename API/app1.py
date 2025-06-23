@@ -29,9 +29,6 @@ def login():
             if user_login(user_name, user_password, conn) == True:
                 print(f"time:{datetime.datetime.now()}, levelname: Info, name:{__name__}, message: admin login successful")
                 return jsonify({"message": "Hello admin!"}), 200
-            # elif name == 'user' and password124 == 'user4321':
-            #     print(f"time:{datetime.datetime.now()}, levelname: Info, name:{__name__}, message: user login successful")
-            #     return jsonify({"message": "Hello user!"}), 200
             else:
                 print(f"time:{datetime.datetime.now()}, levelname: Warning, name:{__name__}, message:Wrong credentials entereed. Username:{user_name} and Password:{user_password}")
                 return jsonify({"message": "Check credentials!"}), 401
