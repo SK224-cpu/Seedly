@@ -27,17 +27,17 @@ class User_Repository:
                 get_all_rows = cur.fetchall()
                 users = []
                 for row in get_all_rows:
-                            id, password, first_name, last_name, dob, objective, creation_date, lock_account, last_login, user_name = row
+                            id, password, first_name, last_name, dob, objective, creation_date, lock_account, last_login, user_name, role = row
                             users.append(U.User(password,first_name, last_name, dob, objective, creation_date, lock_account, last_login, user_name, user_id = id))
                 
                 return users
     
-    def get_user_by_UserId(self, user_id:int):
+    def get_user_by_userid(self, user_id:int):
         with self.conn.cursor() as cur:
             cur.execute("select * from user_details where user_id =%s", (user_id,))
             row = cur.fetchone()
             if row:
-                id, password, first_name, last_name, dob, objective, creation_date, lock_account, last_login, user_name = row
+                id, password, first_name, last_name, dob, objective, creation_date, lock_account, last_login, user_name, role = row
                 return U.User(password,first_name, last_name, dob, objective, creation_date, lock_account, last_login, user_name, user_id = id)
         return None
 
@@ -52,6 +52,7 @@ class User_Repository:
     
     def delete_user(self,user_id):
         with self.conn.cursor() as cur:
+            cur.execute("""delete from daily_entry where user_id=%s""", (user_id,))
             cur.execute("""delete from user_details where user_id=%s""", (user_id,))
         self.conn.commit()
 

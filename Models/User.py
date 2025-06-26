@@ -59,3 +59,17 @@ class User:
                 f"dob={self.dob!r}, objective={self.objective!r}, "
                 f"creation_date={self.creation_date!r}, lock_account={self.lock_account!r}, "
                 f"last_login={self.last_login!r})")
+
+    def to_dict(self):
+        return {
+            "user_id": self.user_id,
+            "password": self.password,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "dob": self.dob,
+            "objective": self.objective,
+            "creation_date": self.creation_date,
+            "lock_account": self.lock_account,
+            "last_login": self.last_login,
+            "user_name": self.user_name
+        }

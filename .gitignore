@@ -264,3 +264,4 @@ fabric.properties
 # UI folder
 /UI/
 /Seedly_Wireframe/
+.run/
