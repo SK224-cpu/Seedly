@@ -1,18 +1,10 @@
 from datetime import datetime
 from flask import Flask, Blueprint, jsonify, request
 from Logic.User import user_login, user_signup, fetch_all_user, fetch_user_detail, delete_user, user_profile_update, user_password_update
-from configparser import ConfigParser
-import psycopg2
+from Repository.DB_conn import DBconn
 
 api = Blueprint('api', __name__, url_prefix='/api/v1')
-
-config = ConfigParser()
-config.read("config/config.ini")
-host_var = config['DB']['host']
-database_var = config['DB']['database']
-user_var = config['DB']['user']
-password_var = config['DB']['password']
-conn = psycopg2.connect(host=host_var, database=database_var, user=user_var, password=password_var)
+connection_var = DBconn()
 
 @api.route('/hello', methods=['GET'])
 def hello():
@@ -21,7 +13,9 @@ def hello():
 
 @api.route('/user/login', methods=['GET'])
 def login():
+    conn = None
     try:
+        conn = connection_var.get_conn()
         json_data = request.get_json()
         user_name = json_data.get('username')
         user_password = json_data.get('password')
@@ -36,6 +30,9 @@ def login():
     except Exception as e:
         print(f"time:{datetime.datetime.now()}, levelname: Error, name:{__name__}, message: request failed. Error:{e}")
         return jsonify({"Error": "Technical error, try again later!"}), 500
+    finally:
+        if conn:
+            connection_var.return_conn(conn)
 
 @api.route('/user/all', methods=['GET'])
 def display_list_of_users():
